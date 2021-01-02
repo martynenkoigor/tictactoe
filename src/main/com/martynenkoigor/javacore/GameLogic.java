@@ -3,107 +3,70 @@ package com.martynenkoigor.javacore;
 import java.util.Scanner;
 
 public class GameLogic {
-    Field field = new Field();
-    Scanner scanxo = new Scanner(System.in);
-    char user = 'X';
-    boolean inProgress = true;
-    boolean correctInput;
-
+    private final Field field = new Field();
+    private final Scanner scanner = new Scanner(System.in);
 
     public void start() {
-        field.printField();
+        char user = 'X';
+        boolean inProgress = true;
+        
+        field.printGame();
 
         while (inProgress) {
             System.out.println("Choose a free field number: ");
 
-            int num = scanxo.nextInt();
-
-            correctInput = putXO(num, user);
-
-            if (correctInput == false) {
+            int position = scanner.nextInt();
+            
+            if (invalidInput(position)) {
                 System.out.println("Wrong input");
                 continue;
             }
 
-            field.printField();
-
-            if (user == 'X') {
-                user = '0';
-            } else {
-                user = 'X';
-            }
-
-            inProgress = checkWinner();
+            move(position, user);
+            field.printGame();
+            inProgress = inProgress(user);
 
 
-
+            user = user == 'X' ? '0' : 'X';
         }
     }
 
-
-
-    private boolean putXO(int num, char symbol) {
-
-        if (num > 9 || num < 1) {
-            return false;
-        }
-        field.getGamefield()[num - 1] = symbol;
-
-        return true;
+    private boolean invalidInput(int num){
+        return num > 9 || num < 1;
     }
 
-    private boolean checkWinner() {
-        if (field.getGamefield()[0] == 'X' && field.getGamefield()[1] == 'X' && field.getGamefield()[2] == 'X') {
-            System.out.println("X won!");
+    private void move(int position, char symbol) {
+        field.setField(position - 1, symbol);
+    }
+
+    private boolean inProgress(char user) {
+        if (field.getField(0) == user && field.getField(1) == user && field.getField(2) == user) {
+            System.out.println(user + " won!");
             return false;
-        } else if(field.getGamefield()[3] == 'X' && field.getGamefield()[4] == 'X' && field.getGamefield()[5] == 'X') {
-            System.out.println("X won!");
+        } else if(field.getField(3) == 'X' && field.getField(4) == 'X' && field.getField(5) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[6] == 'X' && field.getGamefield()[7] == 'X' && field.getGamefield()[8] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(6) == 'X' && field.getField(7) == 'X' && field.getField(8) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[0] == 'X' && field.getGamefield()[3] == 'X' && field.getGamefield()[6] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(0) == 'X' && field.getField(3) == 'X' && field.getField(6) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[1] == 'X' && field.getGamefield()[4] == 'X' && field.getGamefield()[7] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(1) == 'X' && field.getField(4) == 'X' && field.getField(7) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[2] == 'X' && field.getGamefield()[5] == 'X' && field.getGamefield()[8] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(2) == 'X' && field.getField(5) == 'X' && field.getField(8) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[0] == 'X' && field.getGamefield()[4] == 'X' && field.getGamefield()[8] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(0) == 'X' && field.getField(4) == 'X' && field.getField(8) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[2] == 'X' && field.getGamefield()[4] == 'X' && field.getGamefield()[6] == 'X') {
-            System.out.println("X won!");
+        } else if (field.getField(2) == 'X' && field.getField(4) == 'X' && field.getField(6) == 'X') {
+            System.out.println(user + " won!");
             return false;
-        } else if (field.getGamefield()[0] == '0' && field.getGamefield()[1] == '0' && field.getGamefield()[2] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[3] == '0' && field.getGamefield()[4] == '0' && field.getGamefield()[5] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[6] == '0' && field.getGamefield()[7] == '0' && field.getGamefield()[8] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[0] == '0' && field.getGamefield()[3] == '0' && field.getGamefield()[6] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[1] == '0' && field.getGamefield()[4] == '0' && field.getGamefield()[7] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[2] == '0' && field.getGamefield()[5] == '0' && field.getGamefield()[8] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[0] == '0' && field.getGamefield()[4] == '0' && field.getGamefield()[8] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[2] == '0' && field.getGamefield()[4] == '0' && field.getGamefield()[6] == '0') {
-            System.out.println("0 won!");
-            return false;
-        } else if (field.getGamefield()[0] != '1' && field.getGamefield()[1] != '2' && field.getGamefield()[2] != '3' &&
-                field.getGamefield()[3] != '4' && field.getGamefield()[4] != '5' && field.getGamefield()[5] != '6' &&
-                field.getGamefield()[6] != '7' && field.getGamefield()[7] != '8' && field.getGamefield()[8] != '9') {
+        } else if (field.getField(0) != '1' && field.getField(1) != '2' && field.getField(2) != '3' &&
+                field.getField(3) != '4' && field.getField(4) != '5' && field.getField(5) != '6' &&
+                field.getField(6) != '7' && field.getField(7) != '8' && field.getField(8) != '9') {
             System.out.println("Draw!");
             return false;
         } else
